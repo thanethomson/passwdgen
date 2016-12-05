@@ -207,17 +207,22 @@ def secure_random_quality(sample_size=1000000):
     # calculate the variance
     variance = 0.0
     for val, count in iteritems(counts):
-        variance += (val - mean) * count
+        variance += ((val - mean) ** 2.0) * count
     variance /= float(sample_size) - 1.0
     # ensure variance is positive (sometimes zeros can be negative with floating point numbers)
     if variance < 0.0:
         variance *= -1.0
     stddev = math.sqrt(variance)
+    expected_variance = ((101.0 ** 2.0) - 1.0) / 12.0
+    expected_stddev = math.sqrt(expected_variance)
 
     end_time = time.time()
     return {
         "mean": mean,
+        "expected_mean": 50.0,
+        "mean_diff": 100.0 * (abs(50.0 - mean) / 50.0),
         "stddev": stddev,
-        "variance": variance,
+        "expected_stddev": expected_stddev,
+        "stddev_diff": 100.0 * (abs(expected_stddev - stddev) / expected_stddev),
         "time": end_time - start_time
     }

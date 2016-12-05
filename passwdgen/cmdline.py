@@ -171,9 +171,16 @@ def main():
         result = secure_random_quality(args.sample_size)
         print("\nStatistics")
         print("----------")
-        print("Mean               : %.6f (should approach 50.0 as the sample size increases)" % result['mean'])
-        print("Standard deviation : %.6f (should be as close to 0.0 as possible)" % result['stddev'])
-        print("Variance           : %.6f (should be as close to 0.0 as possible)" % result['variance'])
+        print("Mean               : %.6f (should approach %.3f as the sample size increases; %.3f%% difference)" % (
+            result['mean'],
+            result['expected_mean'],
+            result['mean_diff']
+        ))
+        print("Standard deviation : %.6f (should be as close to %.6f as possible; %.3f%% difference)" % (
+            result['stddev'],
+            result['expected_stddev'],
+            result['stddev_diff']
+        ))
         print("Time taken         : %.3f seconds\n" % result['time'])
 
     elif args.command == "generate":
