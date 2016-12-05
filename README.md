@@ -122,12 +122,15 @@ Testing OS RNG. Attempting to generate 1000000 samples between 0 and 100 (inclus
 
 Statistics
 ----------
-Mean               : 49.966427 (should approach 50.0 as the sample size increases)
-Standard deviation : 0.000000 (should be as close to 0.0 as possible)
-Variance           : 0.000000 (should be as close to 0.0 as possible)
-Time taken         : 1.930 seconds
+Mean               : 49.966455 (should approach 50.000 as the sample size increases; 0.067% difference)
+Standard deviation : 29.151161 (should be as close to 29.154759 as possible; 0.012% difference)
+Time taken         : 2.083 seconds
 
 ```
+
+The expected standard deviation for a random variable with a discrete
+uniform random distribution is expected to be calculated as per
+[this Wikipedia entry](https://en.wikipedia.org/wiki/Discrete_uniform_distribution).
 
 ### `wordlist`
 At present, this command has only one sub-command: `clean`. To take
