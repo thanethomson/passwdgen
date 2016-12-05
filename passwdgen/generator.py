@@ -3,9 +3,9 @@
 from __future__ import unicode_literals
 import math
 from builtins import range
-from utils import secure_random
 
-from constants import *
+from .utils import secure_random
+from .constants import *
 
 
 __all__ = [

@@ -13,7 +13,7 @@ import pkg_resources
 import os
 import struct
 
-from constants import *
+from .constants import *
 
 
 __all__ = [

@@ -4,10 +4,11 @@ from __future__ import print_function, unicode_literals
 import sys
 from getpass import getpass
 import argparse
+import pyperclip
 
-from generator import *
-from utils import *
-from constants import *
+from .generator import *
+from .utils import *
+from .constants import *
 
 
 def show_password_entropy(passwd, word_list):
@@ -31,22 +32,14 @@ def main():
     parser_info = subparsers.add_parser(
         "info",
         help=(
-            "Compute information about one or more passwords. If no password file is specified, it attempts to " +
-            "read a password from stdin."
+            "Compute information about a password. If passwdgen has input piped into it via stdin, that " +
+            "will be interpreted as the password."
         )
     )
     parser_info.add_argument(
         "-d", "--dictionary",
         default=None,
         help="Path to the dictionary file to use. This must be a plain text file with one word per line."
-    )
-    parser_info.add_argument(
-        "--password_file",
-        default=None,
-        help=(
-            "Read passwords from a file instead of the command line (assumes a text file, one password per line, " +
-            "skips newlines)."
-        )
     )
     parser_info.add_argument(
         "-e", "--encoding",
@@ -202,7 +195,11 @@ def main():
                 min_entropy=args.min_entropy
             )
 
-        print(passwd)
+        if args.clipboard:
+            pyperclip.copy(passwd)
+            print("Password copied to clipboard.")
+        else:
+            print(passwd)
 
         if args.info:
             show_password_entropy(passwd, word_list)
