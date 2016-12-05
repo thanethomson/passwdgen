@@ -55,7 +55,7 @@ def main():
         help="Generate password(s)."
     )
     parser_generate.add_argument(
-        "--charset",
+        "-t", "--charset",
         choices=PASSWORD_CHARSET_IDS,
         default=PC_DICT,
         help=(
@@ -91,6 +91,7 @@ def main():
     )
     parser_generate.add_argument(
         "-l", "--length",
+        type=int,
         default=None,
         help=(
             "The default number of characters or words to generate, depending on which kind of password " +
@@ -153,18 +154,17 @@ def main():
     args = parser.parse_args()
 
     if args.command == "info":
-        if args.password_file is None:
-            if sys.stdin.isatty():
-                passwd = getpass("Please enter the password to check: ")
-            else:
-                # if the input's been piped in
-                passwd = sys.stdin.read()
-                # strip off the single trailing newline
-                if passwd.endswith("\n"):
-                    passwd = passwd[:-1]
+        if sys.stdin.isatty():
+            passwd = getpass("Please enter the password to check: ")
+        else:
+            # if the input's been piped in
+            passwd = sys.stdin.read()
+            # strip off the single trailing newline
+            if passwd.endswith("\n"):
+                passwd = passwd[:-1]
 
-            word_list = load_word_list(filename=args.dictionary, encoding=args.encoding)
-            show_password_entropy(passwd, word_list)
+        word_list = load_word_list(filename=args.dictionary, encoding=args.encoding)
+        show_password_entropy(passwd, word_list)
 
     elif args.command == "rng":
         print("Testing OS RNG. Attempting to generate %d samples between 0 and 100 (inclusive). Please wait..." % args.sample_size)

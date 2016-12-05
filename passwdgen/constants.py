@@ -11,7 +11,7 @@ __all__ = [
     "PC_NUMERIC",
     "PC_ALPHA_LOWER_SEP",
     "PC_ALPHA_UPPER_SEP",
-    "PC_PRINTABLE",
+    "PC_SPECIAL",
     "PC_DICT",
     "PASSWORD_CHARSETS",
     "separators",
@@ -44,10 +44,11 @@ PC_ALPHA_NUMERIC_SPACED = "alpha-numeric-spaced"
 PC_NUMERIC = "numeric"
 PC_ALPHA_LOWER_SEP = "alpha-lower-sep"
 PC_ALPHA_UPPER_SEP = "alpha-upper-sep"
-PC_PRINTABLE = "printable"
+PC_SPECIAL = "special"
 PC_DICT = "dict"
 
 separators = "-_. ,;:"
+special_chars = separators + "!@#$%^&*()+={}[]'\"\\/?<>~`"
 
 SEP_NONE = "none"
 SEP_DASH = "dash"
@@ -88,7 +89,7 @@ PASSWORD_CHARSETS = {
     PC_ALPHA_NUMERIC_SPACED: set(string.ascii_letters + string.digits + " "),
     PC_ALPHA_LOWER_SEP: set(string.ascii_lowercase + separators),
     PC_ALPHA_UPPER_SEP: set(string.ascii_uppercase + separators),
-    PC_PRINTABLE: set(string.printable)
+    PC_SPECIAL: set(string.ascii_letters + string.digits + special_chars)
 }
 
 PASSWORD_CHARSET_NAMES = (
@@ -100,7 +101,7 @@ PASSWORD_CHARSET_NAMES = (
     (PC_NUMERIC, "Numeric (0-9)"),
     (PC_ALPHA_LOWER_SEP, "Alphabetical, lowercase, with separator (a-z, separator)"),
     (PC_ALPHA_UPPER_SEP, "Alphabetical, uppercase, with separator (A-Z, separator)"),
-    (PC_PRINTABLE, "All printable characters (a-z, A-Z, 0-9, punctuation, whitespace)"),
+    (PC_SPECIAL, "Alphabetical, numeric and special characters (a-z, A-Z, 0-9, punctuation)"),
     (PC_DICT, "Dictionary")
 )
 

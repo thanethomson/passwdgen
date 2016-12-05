@@ -28,20 +28,20 @@ class TestPasswordGeneration(unittest.TestCase):
             self.assertTrue(pw_chars.issubset(charset))
 
     def test_character_length_based_password_generation(self):
-        pw = generate_password_chars(PC_PRINTABLE, length=10)
+        pw = generate_password_chars(PC_SPECIAL, length=10)
         self.assertEqual(10, len(pw))
 
-        pw = generate_password_chars(PC_PRINTABLE, length=20)
+        pw = generate_password_chars(PC_SPECIAL, length=20)
         self.assertEqual(20, len(pw))
 
     def test_character_entropy_based_password_generation(self):
-        pw = generate_password_chars(PC_PRINTABLE, min_entropy=50)
-        entropy = calculate_entropy(pw, PASSWORD_CHARSETS[PC_PRINTABLE])
-        self.assertTrue(entropy[PC_PRINTABLE] >= 50.0)
+        pw = generate_password_chars(PC_SPECIAL, min_entropy=50)
+        entropy = calculate_entropy(pw, PASSWORD_CHARSETS[PC_SPECIAL])
+        self.assertTrue(entropy[PC_SPECIAL] >= 50.0)
 
-        pw = generate_password_chars(PC_PRINTABLE, min_entropy=100)
-        entropy = calculate_entropy(pw, PASSWORD_CHARSETS[PC_PRINTABLE])
-        self.assertTrue(entropy[PC_PRINTABLE] >= 100.0)
+        pw = generate_password_chars(PC_SPECIAL, min_entropy=100)
+        entropy = calculate_entropy(pw, PASSWORD_CHARSETS[PC_SPECIAL])
+        self.assertTrue(entropy[PC_SPECIAL] >= 100.0)
 
     def test_dict_word_size_based_password_generation(self):
         pw = generate_password_words(self.word_list, word_count=4)
