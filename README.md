@@ -1,5 +1,8 @@
 # passwdgen
 
+[![Build Status](https://travis-ci.org/thanethomson/passwdgen.svg?branch=master)](https://travis-ci.org/thanethomson/passwdgen)
+[![PyPI version 0.1.0](https://img.shields.io/badge/pypi-v0.1.0-blue.svg)](https://pypi.python.org/pypi/passwdgen/0.1.0)
+
 ## Overview
 `passwdgen` is a simple password generation utility with a couple of
 powerful extra features (including password entropy calculation and
@@ -13,6 +16,155 @@ Python 3.5+.
 ```bash
 > pip install passwdgen
 ```
+
+If you want `passwdgen` to be globally accessible, you'll need to
+install it with `sudo`/`root` privileges:
+
+```bash
+> sudo pip install passwdgen
+```
+
+
+## Usage
+The simplest password generation command you can execute is:
+
+```bash
+> passwdgen generate
+totems-representing-sachem-tarrier
+```
+
+## Commands
+To find out more detailed help about a particular command, simply
+run:
+
+```bash
+> passwdgen <command> --help
+
+# For example:
+> passwdgen generate --help
+```
+
+### `info`
+Allows you to calculate the entropy of a particular password. For
+example, on UNIX-like systems, you can simply pipe the password into
+the info command:
+
+```bash
+> echo "some-password" | passwdgen info
+> cat /path/to/password/file | passwdgen info
+```
+
+If you do not pipe text into `passwdgen`, it will prompt you to enter
+the password on the command line:
+
+```bash
+> passwdgen info
+Please enter the password to check: <type your password here>
+```
+
+For more information on password entropy, please see the section
+on **Entropy** further on in this README.
+
+### `generate`
+Generate a password. Two kinds of passwords can be generated:
+
+* dictionary-based passwords (the default), or
+* character-based passwords (see this [XKCD](http://xkcd.com/936/)
+  before you choose this mechanism).
+ 
+Some examples of **dictionary-based** password generation:
+
+```bash
+# Generate a dictionary-based password 6 words long
+> passwdgen generate -l 6
+
+# Generate a dictionary-based password with minimum entropy 70 bits
+> passwdgen generate -m 70
+
+# Generate a dictionary-based password and copy it to the clipboard
+> passwdgen generate -c
+
+# Generate a dictionary-based password with colons (:) as a separator
+> passwdgen generate -s colon
+
+# Generate a dictionary-based password and display its entropy info
+> passwdgen generate -i
+```
+
+Some examples of **character-based** password generation:
+
+```bash
+# Generate a password 15 characters long comprising numbers and letters
+> passwdgen generate -t alpha-numeric -l 15
+
+# Generate a password 18 characters long comprising numbers, letters and
+# special characters
+> passwdgen generate -t special -l 18
+
+# Generate a password 12 characters long and display its entropy info
+> passwdgen generate -t special -l 12 -i
+
+# Generate a character-based password, copy it to the clipboard, and
+# display its entropy info
+> passwdgen generate -t special -c -i
+```
+
+### `rng`
+Runs a quick test of your OS' pseudorandom number generator (PRNG).
+Computes a sample set (by default, 1 million entries) of random
+numbers between 0 and 100 (inclusive)
+
+For example:
+
+```bash
+> passwdgen rng
+Testing OS RNG. Attempting to generate 1000000 samples between 0 and 100 (inclusive). Please wait...
+
+Statistics
+----------
+Mean               : 49.966427 (should approach 50.0 as the sample size increases)
+Standard deviation : 0.000000 (should be as close to 0.0 as possible)
+Variance           : 0.000000 (should be as close to 0.0 as possible)
+Time taken         : 1.930 seconds
+
+```
+
+### `wordlist`
+At present, this command has only one sub-command: `clean`. To take
+an arbitrary word list (a text file with one word per line) and
+clean it up, do the following:
+
+```bash
+> passwdgen wordlist clean /path/to/input/file.txt /path/to/output/file.txt
+```
+
+This command will:
+
+* remove empty lines,
+* strip out any plurals (`'s` at the end of strings),
+* convert all words to lowercase,
+* deduplicate entries, and
+* sort everything alphabetically.
+
+
+## Character Sets
+The following character sets are available at present (for use with the
+`generate --charset <charset>` command).
+
+* `dict`: Dictionary-based password generation.
+* `alpha-lower`: Lowercase alphabetical letters (`a-z`).
+* `alpha-upper`: Uppercase alphabetical letters (`A-Z`).
+* `alpha`: Alphabetical (`a-z`, `A-Z`).
+* `alpha-numeric`: Alphanumeric characters (`a-z`, `A-Z`, `0-9`).
+* `alpha-numeric-spaced`: Alphanumeric characters and spaces (`a-z`,
+  `A-Z`, `0-9`, ` `).
+* `numeric`: Numeric characters (`0-9`).
+* `alpha-lower-sep`: Lowercase alphabetical letters and separators
+  (`a-z`, `-_. ,;:`).
+* `alpha-upper-sep`: Uppercase alphabetical letters and separators
+  (`A-Z`, `-_. ,;:`).
+* `special`: Alphanumeric characters and special characters
+  (`a-z`, `A-Z`, `0-9`, ``-_. ,;:!@#$%^&*()+={}[]'\"\\/?<>`~``).
 
 
 ## Entropy
