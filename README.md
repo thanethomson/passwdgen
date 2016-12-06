@@ -1,7 +1,7 @@
 # passwdgen
 
 [![Build Status](https://travis-ci.org/thanethomson/passwdgen.svg?branch=master)](https://travis-ci.org/thanethomson/passwdgen)
-[![PyPI version 0.1.1](https://img.shields.io/badge/pypi-v0.1.1-blue.svg)](https://pypi.python.org/pypi/passwdgen/0.1.1)
+[![PyPI version 0.1.2](https://img.shields.io/badge/pypi-v0.1.2-blue.svg)](https://pypi.python.org/pypi/passwdgen/0.1.2)
 
 ## Overview
 `passwdgen` is a simple password generation utility with a couple of
@@ -150,6 +150,97 @@ This command will:
 * sort everything alphabetically.
 
 
+## API
+Using `passwdgen` from your own Python project is easy:
+
+```python
+import passwdgen
+
+# Generate a dictionary-based password using the built-in dictionary
+my_password = passwdgen.words()
+
+# Generate a character-based password
+my_password = passwdgen.chars()
+
+# Generate a dictionary-based password with 6 words
+long_password = passwdgen.words(word_count=6)
+
+# Generate a dictionary-based password with minimum entropy 80
+difficult_password = passwdgen.words(min_entropy=80)
+
+# Generate a dictionary-based password with a custom dictionary
+my_dictionary = passwdgen.load_word_list("/path/to/my/dict.txt")
+password = passwdgen.words(my_dictionary)
+```
+
+### `passwdgen.words(dict_set, separator, word_count, min_entropy)`
+Generates a dictionary-based password. All arguments are keyword
+arguments and are optional:
+
+* `dict_set`: A `set` containing all of the possible words from which to
+  generate a password. If not supplied, this will default to the
+  built-in dictionary.
+* `separator`: The separator character to use between the words.
+  Default value: `-` (hyphen)
+* `word_count`: The number of words to use when generating the password.
+  If not specified, and `min_entropy` is not specified, this defaults
+  to `4`.
+* `min_entropy`: The minimum required entropy of the generated
+  password. If `word_count` is specified, this parameter is ignored.
+
+Returns a string.
+
+### `passwdgen.chars(charset, length, min_entropy)`
+Generates a character-based password. All arguments are keyword
+arguments and are optional:
+
+* `charset`: The ID of the character set from which to source characters
+  for the generated password. Default: `special`. See the
+  section on **Character Sets** below.
+* `length`: The required number of characters in the generated password.
+  If neither `length` nor `min_entropy` are specified, this defaults
+  to `12`.
+* `min_entropy`: The minimum required entropy of the generated
+  password. If `length` is specified, this parameter is ignored.
+
+Returns a string.
+
+### `passwdgen.load_word_list(filename, encoding)`
+Loads a word list into memory. All arguments are keyword arguments
+and are optional:
+
+* `filename`: The path to the file from which to load the words. This
+  file must be a plain text file containing one word per line. If
+  not specified, this loads the built-in dictionary into memory.
+* `encoding`: The character encoding to use when reading the file.
+
+Returns a `set` containing the loaded words.
+
+### `passwdgen.secure_random(a, b)`
+Securely generates a random number using the given limits.
+
+* `a` (required): If `b` is specified, `a` represents the lower limit
+  (inclusive) of the resulting random number. If `b` is not specified,
+  `a` represents the upper limit (exclusive) of the generated number,
+  and the lower limit defaults to `0`.
+* `b` (optional): The upper limit (exclusive) of the generated random
+  number.
+
+Returns a securely generated random number with `a <= result < b` if
+`b` is specified, or `0 <= result < a` if `b` is not specified.
+
+### `passwdgen.calculate_entropy(password, dict_set)`
+Attempts to calculate the entropy of the given password based on
+the preconfigured character sets and the dictionary.
+
+* `password` (required): The password whose entropy is to be calculated.
+* `dict_set` (optional): A `set` of words comprising the dictionary
+  for which to perform the dictionary-based entropy calculation.
+
+Returns a `dict` whose keys represent the IDs of the different character
+sets tested, and values represent the corresponding entropies.
+
+
 ## Character Sets
 The following character sets are available at present (for use with the
 `generate --charset <charset>` command).
@@ -236,6 +327,53 @@ attacker of `4 x log2(275,185) = 72.28` bits (assuming dictionary
 size of 275,185 words). This is still a pretty strong password, but
 it is still easier to crack than a password where the attacker does not
 know that it is dictionary-based.
+
+### How much entropy is enough?
+So how does one select an appropriate entropy for trying to prevent
+brute force attacks? This is difficult to estimate, because it depends
+entirely on the resources available to an attacker. Usually it's cheaper
+and easier to perform social engineering attacks if someone wants to
+obtain your password, but if you're paranoid about security and want to
+cover all your bases, you have to think about the kinds of computing
+power available to attackers.
+
+Assuming that whichever service stores your password does not store the
+clear password itself, but a [SHA-256](https://en.wikipedia.org/wiki/SHA-2)
+hash of the password (common practice today), and an attacker manages
+to get hold of this SHA-256 hash, they will have to try many possible
+permutations of input passwords that will eventually match to that
+SHA-256 hash.
+
+In general, [GPU-based hash attacks are much faster](https://blog.codinghorror.com/speed-hashing/)
+than CPU-based hash attacks. At the time of this writing, it would seem
+as though high-end GPUs have the ability to perform around 1,000
+megahashes per second (that's 1,000,000,000 hashes per second, or
+`10^9` hashes per second).
+
+Let's assume you generate a dictionary-based password, where the
+source dictionary size is **71,188** words. Let's also assume that the
+attacker has the same source dictionary, and knows which character you
+use to separate the words in your password (in this case, a hyphen).
+
+| Words | Permutations                      | Time to Crack    | Entropy    |
+| ----- | --------------------------------- | ---------------- | ---------- |
+| 2     | 5,067,660,156                     | 5.07 seconds     | 32.24 bits |
+| 3     | 360,746,455,865,016               | 4.175 days       | 48.36 bits |
+| 4     | 25,679,736,460,751,163,960        | 814 years        | 64.47 bits |
+| 5     | 1,827,986,360,222,110,855,328,640 | 57,965,067 years | 80.6 bits  |
+
+Of course, if an attacker splits the work up evenly across multiple
+GPUs, the time to crack goes down linearly, so a 4-word password being
+brute-force cracked by 2 GPUs would take 407 years, 3 GPUs would take
+203.5 years, 10 GPUs 81.4 years, 100 GPUs 8.1 years, 1,000 GPUs
+would take about 9.5 months, and 10,000 GPUs would take 29.7 days.
+
+So, as you see, it really depends on the resources available to an
+attacker. In general though, right now, a password with entropy
+80 bits and upwards, from the perspective of an attacker, is pretty
+much infeasible to crack (so a 5-word password from a significantly
+sized source dictionary and a good quality PRNG). This will, of course,
+possibly change in the age of quantum computers.
 
 
 ## Dictionary
