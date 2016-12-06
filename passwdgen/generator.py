@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import math
 from builtins import range
 
-from .utils import secure_random
+from .utils import secure_random, load_word_list
 from .constants import *
 
 
@@ -54,21 +54,24 @@ def chars(charset, length=None, min_entropy=None):
     return password
 
 
-def words(dict_set, separator=None, word_count=None, min_entropy=None):
+def words(dict_set=None, separator=None, word_count=None, min_entropy=None):
     """Generates a word-based password from the given dictionary. If the word_count parameter is supplied,
     the min_entropy parameter is ignored (i.e. either a word count or minimum entropy is required, but not
     both). If no length or min_entropy parameters are supplied, a default word count is chosen (see
     constants.DEFAULT_WORD_PASSWORD_WORDS).
 
     Args:
-        dict_set: The word list/dictionary from which to generate a password.
-        separator:
+        dict_set: The word list/dictionary from which to generate a password. Defaults to the built-in word list.
+        separator: The separator to use between words.
         word_count: The number of words to use to build the password.
         min_entropy: The desired minimum entropy of the password, based on the given dictionary.
 
     Returns:
         A string containing the generated password.
     """
+    if dict_set is None:
+        dict_set = load_word_list()
+
     word_list = list(dict_set)
     word_list_size = len(word_list)
     password_words = []
