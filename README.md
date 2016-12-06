@@ -89,6 +89,9 @@ Some examples of **dictionary-based** password generation:
 
 # Generate a dictionary-based password and display its entropy info
 > passwdgen generate -i
+
+# Generate a dictionary-based password based on the given starting letters
+> passwdgen generate --starting-letters hello
 ```
 
 Some examples of **character-based** password generation:
@@ -173,7 +176,7 @@ my_dictionary = passwdgen.load_word_list("/path/to/my/dict.txt")
 password = passwdgen.words(my_dictionary)
 ```
 
-### `passwdgen.words(dict_set, separator, word_count, min_entropy)`
+### `passwdgen.words(dict_set, separator, word_count, min_entropy, starting_letters)`
 Generates a dictionary-based password. All arguments are keyword
 arguments and are optional:
 
@@ -187,6 +190,12 @@ arguments and are optional:
   to `4`.
 * `min_entropy`: The minimum required entropy of the generated
   password. If `word_count` is specified, this parameter is ignored.
+* `starting_letters`: A string containing the desired starting letters
+  of each word in the generated password. Note: if `word_count` or
+  `min_entropy` are specified, this string must contain at least
+  the relevant number of characters to match the number of generated
+  words. Otherwise the generated password will have exactly the same
+  number of words as this string has characters.
 
 Returns a string.
 
