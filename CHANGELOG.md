@@ -1,5 +1,10 @@
 # Changelog for `passwdgen`
 
+## `v0.2.0` - 06 December 2016
+
+* Added feature to allow one to generate passwords based on
+
+
 ## `v0.1.2` - 06 December 2016
 
 * Renamed password generation functions from `generate_password_chars`
