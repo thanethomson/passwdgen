@@ -14,14 +14,15 @@ __all__ = [
 ]
 
 
-def chars(charset, length=None, min_entropy=None):
+def chars(charset=None, length=None, min_entropy=None):
     """Generates a character-based password. If the length parameter is supplied, the min_entropy parameter
     is ignored (i.e. either a length or a minimum entropy is required, but not both). If no length or
     min_entropy parameters are supplied, a default password length is chosen (see
     constants.DEFAULT_CHAR_PASSWORD_LENGTH).
 
     Args:
-        charset: The character set to use from which to source characters.
+        charset: The character set to use from which to source characters. If not specified, it defaults to
+            the character set with alphanumeric and special characters.
         length: The desired length of the password.
         min_entropy: The desired minimum entropy of the password, based on the given charset.
 
