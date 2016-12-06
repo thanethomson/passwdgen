@@ -1,7 +1,7 @@
 # passwdgen
 
 [![Build Status](https://travis-ci.org/thanethomson/passwdgen.svg?branch=master)](https://travis-ci.org/thanethomson/passwdgen)
-[![PyPI version 0.2.0](https://img.shields.io/badge/pypi-v0.2.0-blue.svg)](https://pypi.python.org/pypi/passwdgen/0.2.0)
+[![PyPI version 0.2.1](https://img.shields.io/badge/pypi-v0.2.1-blue.svg)](https://pypi.python.org/pypi/passwdgen/0.2.1)
 
 ## Overview
 `passwdgen` is a simple password generation utility with a couple of

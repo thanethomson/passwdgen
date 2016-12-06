@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
+from .constants import *
 from .generator import *
 from .utils import *
-
-__version__ = u"0.2.0"
