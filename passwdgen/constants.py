@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 import string
 
 __all__ = [
-    "VERSION",
     "PC_ALPHA_LOWER",
     "PC_ALPHA_UPPER",
     "PC_ALPHA",
@@ -36,8 +35,6 @@ __all__ = [
     "MIN_DICT_SIZE",
     "DEFAULT_WORD_SEPARATOR"
 ]
-
-VERSION = "0.2.1"
 
 PC_ALPHA_LOWER = "alpha-lower"
 PC_ALPHA_UPPER = "alpha-upper"

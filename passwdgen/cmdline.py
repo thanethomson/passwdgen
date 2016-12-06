@@ -4,9 +4,9 @@ from __future__ import print_function, unicode_literals
 import sys
 from getpass import getpass
 import argparse
+import pkg_resources
 import pyperclip
 
-from . import __version__
 from .generator import *
 from .utils import *
 from .constants import *
@@ -27,14 +27,9 @@ def show_password_entropy(passwd, word_list):
 def main():
     """Main routine for handling command line functionality for passwdgen."""
 
-    parser = argparse.ArgumentParser(description="A password generation utility (v%s)." % __version__)
+    version = pkg_resources.require("passwdgen")[0].version
+    parser = argparse.ArgumentParser(description="A password generation utility (v%s)." % version)
     subparsers = parser.add_subparsers(help="The command to execute.", dest="command")
-
-    parser.add_argument(
-        "-v", "--version",
-        action="store_true",
-        help="Display the version of passwdgen."
-    )
 
     parser_info = subparsers.add_parser(
         "info",
@@ -138,6 +133,11 @@ def main():
         help="Define the sample size to test with (default = 1,000,000)."
     )
 
+    subparsers.add_parser(
+        "version",
+        help="Display the version of passwdgen and exit."
+    )
+
     parser_wordlist = subparsers.add_parser(
         "wordlist",
         help="Utilities relating to word list manipulation."
@@ -167,8 +167,8 @@ def main():
 
     args = parser.parse_args()
 
-    if args.version:
-        print("passwdgen v%s" % __version__)
+    if args.command == "version":
+        print("passwdgen v%s" % version)
 
     elif args.command == "info":
         if sys.stdin.isatty():

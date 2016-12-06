@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from setuptools import setup
-from passwdgen.constants import VERSION
 
 INSTALL_REQUIREMENTS = [
     "future==0.16.0",
@@ -10,7 +9,7 @@ INSTALL_REQUIREMENTS = [
 
 setup(
     name="passwdgen",
-    version=VERSION,
+    version="0.2.2",
     description="A password generation utility",
     author="Thane Thomson",
     author_email="connect@thanethomson.com",
