@@ -107,7 +107,7 @@ def words(dict_set=None, separator=None, word_count=None, min_entropy=None, star
         # check that all of the required starting letters are represented
         for ch in starting_letters:
             if not (ch in categorised_words):
-                raise ValueError("Dictionary does not contain any words beginning with: %s" % ch)
+                raise ValueError("Dictionary does not contain any words beginning with \"%s\"" % ch)
 
     password_words = []
 
