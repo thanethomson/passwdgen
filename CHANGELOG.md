@@ -1,5 +1,11 @@
 # Changelog for `passwdgen`
 
+## `v0.2.1` - 06 December 2016
+
+* Fixing minor issue with setup in Python 2.7 (depending on the
+  `builtins` library, which is not available by default in Python 2).
+
+
 ## `v0.2.0` - 06 December 2016
 
 * Added feature to allow one to generate passwords based on
