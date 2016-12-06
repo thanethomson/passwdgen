@@ -1,5 +1,13 @@
 # Changelog for `passwdgen`
 
+## `v0.1.2` - 06 December 2016
+
+* Renamed password generation functions from `generate_password_chars`
+  and `generate_password_words` to simply `chars` and `words`.
+  Simplifies API.
+* Added more documentation around password entropy selection.
+
+
 ## `v0.1.1` - 05 December 2016
 
 * Fixing statistical calculation for `rng` command.
