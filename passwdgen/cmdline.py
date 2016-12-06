@@ -189,14 +189,14 @@ def main():
         # dictionary-based password generation
         if args.charset == PC_DICT:
             # load our dictionary
-            passwd = generate_password_words(
+            passwd = words(
                 word_list,
                 separator=PASSWORD_SEPARATORS[args.separator],
                 word_count=args.length,
                 min_entropy=args.min_entropy
             )
         else:
-            passwd = generate_password_chars(
+            passwd = chars(
                 args.charset,
                 length=args.length,
                 min_entropy=args.min_entropy

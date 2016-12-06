@@ -9,12 +9,12 @@ from .constants import *
 
 
 __all__ = [
-    "generate_password_chars",
-    "generate_password_words"
+    "chars",
+    "words"
 ]
 
 
-def generate_password_chars(charset, length=None, min_entropy=None):
+def chars(charset, length=None, min_entropy=None):
     """Generates a character-based password. If the length parameter is supplied, the min_entropy parameter
     is ignored (i.e. either a length or a minimum entropy is required, but not both). If no length or
     min_entropy parameters are supplied, a default password length is chosen (see
@@ -54,7 +54,7 @@ def generate_password_chars(charset, length=None, min_entropy=None):
     return password
 
 
-def generate_password_words(dict_set, separator=None, word_count=None, min_entropy=None):
+def words(dict_set, separator=None, word_count=None, min_entropy=None):
     """Generates a word-based password from the given dictionary. If the word_count parameter is supplied,
     the min_entropy parameter is ignored (i.e. either a word count or minimum entropy is required, but not
     both). If no length or min_entropy parameters are supplied, a default word count is chosen (see

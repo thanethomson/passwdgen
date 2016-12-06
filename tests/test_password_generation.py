@@ -15,49 +15,49 @@ class TestPasswordGeneration(unittest.TestCase):
 
     def test_failure_modes(self):
         try:
-            generate_password_chars("some-unrecognised-charset")
+            chars("some-unrecognised-charset")
             self.fail("Unrecognised charsets should trigger a ValueError")
         except ValueError:
             pass
 
     def test_password_charset_intersection(self):
         for charset_id, charset in iteritems(PASSWORD_CHARSETS):
-            pw = generate_password_chars(charset_id)
+            pw = chars(charset_id)
             self.assertEqual(DEFAULT_CHAR_PASSWORD_LENGTH, len(pw))
             pw_chars = set(pw)
             self.assertTrue(pw_chars.issubset(charset))
 
     def test_character_length_based_password_generation(self):
-        pw = generate_password_chars(PC_SPECIAL, length=10)
+        pw = chars(PC_SPECIAL, length=10)
         self.assertEqual(10, len(pw))
 
-        pw = generate_password_chars(PC_SPECIAL, length=20)
+        pw = chars(PC_SPECIAL, length=20)
         self.assertEqual(20, len(pw))
 
     def test_character_entropy_based_password_generation(self):
-        pw = generate_password_chars(PC_SPECIAL, min_entropy=50)
+        pw = chars(PC_SPECIAL, min_entropy=50)
         entropy = calculate_entropy(pw, PASSWORD_CHARSETS[PC_SPECIAL])
         self.assertTrue(entropy[PC_SPECIAL] >= 50.0)
 
-        pw = generate_password_chars(PC_SPECIAL, min_entropy=100)
+        pw = chars(PC_SPECIAL, min_entropy=100)
         entropy = calculate_entropy(pw, PASSWORD_CHARSETS[PC_SPECIAL])
         self.assertTrue(entropy[PC_SPECIAL] >= 100.0)
 
     def test_dict_word_size_based_password_generation(self):
-        pw = generate_password_words(self.word_list, word_count=4)
+        pw = words(self.word_list, word_count=4)
         pw_words = pw.split(DEFAULT_WORD_SEPARATOR)
         self.assertEqual(4, len(pw_words))
 
-        pw = generate_password_words(self.word_list, separator=":", word_count=8)
+        pw = words(self.word_list, separator=":", word_count=8)
         pw_words = pw.split(":")
         self.assertEqual(8, len(pw_words))
 
     def test_dict_entropy_based_password_generation(self):
-        pw = generate_password_words(self.word_list, min_entropy=50)
+        pw = words(self.word_list, min_entropy=50)
         entropy = calculate_entropy(pw, dict_set=self.word_list)
         self.assertTrue(entropy[PC_DICT] >= 50.0)
 
-        pw = generate_password_words(self.word_list, min_entropy=100)
+        pw = words(self.word_list, min_entropy=100)
         entropy = calculate_entropy(pw, dict_set=self.word_list)
         self.assertTrue(entropy[PC_DICT] >= 100.0)
 
