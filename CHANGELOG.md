@@ -1,5 +1,9 @@
 # Changelog for `passwdgen`
 
+## `v0.2.2` - 06 December 2016
+
+* Another attempt to fix `builtins` import issue in Python 2.7.
+
 ## `v0.2.1` - 06 December 2016
 
 * Fixing minor issue with setup in Python 2.7 (depending on the
