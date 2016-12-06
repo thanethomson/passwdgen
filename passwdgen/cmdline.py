@@ -6,6 +6,7 @@ from getpass import getpass
 import argparse
 import pyperclip
 
+from . import __version__
 from .generator import *
 from .utils import *
 from .constants import *
@@ -26,8 +27,14 @@ def show_password_entropy(passwd, word_list):
 def main():
     """Main routine for handling command line functionality for passwdgen."""
 
-    parser = argparse.ArgumentParser(description="A password generation utility.")
+    parser = argparse.ArgumentParser(description="A password generation utility (v%s)." % __version__)
     subparsers = parser.add_subparsers(help="The command to execute.", dest="command")
+
+    parser.add_argument(
+        "-v", "--version",
+        action="store_true",
+        help="Display the version of passwdgen."
+    )
 
     parser_info = subparsers.add_parser(
         "info",
@@ -53,15 +60,6 @@ def main():
     parser_generate = subparsers.add_parser(
         "generate",
         help="Generate password(s)."
-    )
-    parser_generate.add_argument(
-        "-t", "--charset",
-        choices=PASSWORD_CHARSET_IDS,
-        default=PC_DICT,
-        help=(
-            "Which character set/approach to use when generating the password (default=\"%s\"). See the " +
-            "README.md file at https://github.com/thanethomson/passwdgen for more details."
-        ) % PC_DICT
     )
     parser_generate.add_argument(
         "-c", "--clipboard",
@@ -112,6 +110,22 @@ def main():
             "The separator to use when generating passwords from dictionaries (default=%s)."
         ) % SEP_DASH
     )
+    parser_generate.add_argument(
+        "--starting-letters",
+        default=None,
+        help=(
+            "The letters to use as initials for the generated words."
+        )
+    )
+    parser_generate.add_argument(
+        "-t", "--charset",
+        choices=PASSWORD_CHARSET_IDS,
+        default=PC_DICT,
+        help=(
+                 "Which character set/approach to use when generating the password (default=\"%s\"). See the " +
+                 "README.md file at https://github.com/thanethomson/passwdgen for more details."
+             ) % PC_DICT
+    )
 
     parser_rng = subparsers.add_parser(
         "rng",
@@ -153,7 +167,10 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "info":
+    if args.version:
+        print("passwdgen v%s" % __version__)
+
+    elif args.command == "info":
         if sys.stdin.isatty():
             passwd = getpass("Please enter the password to check: ")
         else:
@@ -184,32 +201,37 @@ def main():
         print("Time taken         : %.3f seconds\n" % result['time'])
 
     elif args.command == "generate":
-        word_list = load_word_list(filename=args.dictionary, encoding=args.encoding)
+        try:
+            word_list = load_word_list(filename=args.dictionary, encoding=args.encoding)
 
-        # dictionary-based password generation
-        if args.charset == PC_DICT:
-            # load our dictionary
-            passwd = words(
-                word_list,
-                separator=PASSWORD_SEPARATORS[args.separator],
-                word_count=args.length,
-                min_entropy=args.min_entropy
-            )
-        else:
-            passwd = chars(
-                args.charset,
-                length=args.length,
-                min_entropy=args.min_entropy
-            )
+            # dictionary-based password generation
+            if args.charset == PC_DICT:
+                # load our dictionary
+                passwd = words(
+                    word_list,
+                    separator=PASSWORD_SEPARATORS[args.separator],
+                    word_count=args.length,
+                    min_entropy=args.min_entropy,
+                    starting_letters=args.starting_letters
+                )
+            else:
+                passwd = chars(
+                    args.charset,
+                    length=args.length,
+                    min_entropy=args.min_entropy
+                )
 
-        if args.clipboard:
-            pyperclip.copy(passwd)
-            print("Password copied to clipboard.")
-        else:
-            print(passwd)
+            if args.clipboard:
+                pyperclip.copy(passwd)
+                print("Password copied to clipboard.")
+            else:
+                print(passwd)
 
-        if args.info:
-            show_password_entropy(passwd, word_list)
+            if args.info:
+                show_password_entropy(passwd, word_list)
+
+        except ValueError as e:
+            print("Error: %s" % e)
 
     elif args.command == "wordlist":
         if args.wordlist_subcommand == "clean":

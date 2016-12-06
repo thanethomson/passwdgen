@@ -13,10 +13,23 @@ class TestPasswordGeneration(unittest.TestCase):
 
     word_list = load_word_list()
 
-    def test_failure_modes(self):
+    def test_unrecognised_charset(self):
         try:
             chars("some-unrecognised-charset")
             self.fail("Unrecognised charsets should trigger a ValueError")
+        except ValueError:
+            pass
+
+    def test_not_enough_starting_letters(self):
+        try:
+            words(self.word_list, word_count=5, starting_letters="abc")
+            self.fail("Fewer starting letters than required word count should trigger a ValueError")
+        except ValueError:
+            pass
+
+        try:
+            words(self.word_list, min_entropy=80, starting_letters="abc")
+            self.fail("Fewer starting letters than required word count should trigger a ValueError")
         except ValueError:
             pass
 
@@ -60,6 +73,14 @@ class TestPasswordGeneration(unittest.TestCase):
         pw = words(self.word_list, min_entropy=100)
         entropy = calculate_entropy(pw, dict_set=self.word_list)
         self.assertTrue(entropy[PC_DICT] >= 100.0)
+
+    def test_starting_letters(self):
+        starting_letters = "hello"
+        pw = words(self.word_list, starting_letters=starting_letters)
+        pw_words = pw.split("-")
+        self.assertEqual(len(starting_letters), len(pw_words))
+        for i in range(len(pw_words)):
+            self.assertTrue(pw_words[i].startswith(starting_letters[i]))
 
 
 if __name__ == "__main__":
