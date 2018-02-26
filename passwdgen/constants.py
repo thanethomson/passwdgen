@@ -89,7 +89,8 @@ PASSWORD_CHARSETS = {
     PC_ALPHA_NUMERIC_SPACED: set(string.ascii_letters + string.digits + " "),
     PC_ALPHA_LOWER_SEP: set(string.ascii_lowercase + separators),
     PC_ALPHA_UPPER_SEP: set(string.ascii_uppercase + separators),
-    PC_SPECIAL: set(string.ascii_letters + string.digits + special_chars)
+    PC_SPECIAL: set(string.ascii_letters + string.digits + special_chars),
+    PC_NUMERIC: set(string.digits)
 }
 
 PASSWORD_CHARSET_NAMES = (
