@@ -9,7 +9,7 @@ INSTALL_REQUIREMENTS = [
 
 setup(
     name="passwdgen",
-    version="0.2.2",
+    version="0.2.3",
     description="A password generation utility",
     author="Thane Thomson",
     author_email="connect@thanethomson.com",
