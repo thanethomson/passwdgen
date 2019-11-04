@@ -47,7 +47,10 @@ PC_SPECIAL = "special"
 PC_DICT = "dict"
 
 separators = "-_. ,;:"
-special_chars = separators + "!@#$%^&*()+={}[]'\"\\/?<>~`"
+
+# Use special characters from AWS password requirements:
+# https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+special_chars = "!@#$%^&*()_+-=[]{}|'"
 
 SEP_NONE = "none"
 SEP_DASH = "dash"
