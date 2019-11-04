@@ -11,8 +11,7 @@ entropy-based password generation).
 
 
 ## Installation
-To use `passwdgen`, you will need to install either Python 2.7+ or
-Python 3.5+.
+To use `passwdgen`, you will need to install Python 3.6+.
 
 ```bash
 > pip install passwdgen
