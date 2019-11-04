@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-from builtins import range
-
 import unittest
 from passwdgen.utils import secure_random
 

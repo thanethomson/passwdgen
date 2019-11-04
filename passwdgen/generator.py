@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
 import math
-from builtins import range
 
 from .utils import secure_random, load_word_list
 from .constants import *

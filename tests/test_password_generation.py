@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-from future.utils import iteritems
 import unittest
 
 from passwdgen.generator import *
@@ -34,7 +32,7 @@ class TestPasswordGeneration(unittest.TestCase):
             pass
 
     def test_password_charset_intersection(self):
-        for charset_id, charset in iteritems(PASSWORD_CHARSETS):
+        for charset_id, charset in PASSWORD_CHARSETS.items():
             pw = chars(charset_id)
             self.assertEqual(DEFAULT_CHAR_PASSWORD_LENGTH, len(pw))
             pw_chars = set(pw)

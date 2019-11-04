@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-from future.utils import iteritems
-from builtins import range
 from functools import reduce
 from operator import mul
 from string import ascii_lowercase
@@ -104,7 +101,7 @@ def calculate_entropy(password, dict_set=None):
     entropy = dict()
 
     # find the charsets in which we'll find this password
-    for charset_name, charset in iteritems(PASSWORD_CHARSETS):
+    for charset_name, charset in PASSWORD_CHARSETS.items():
         if password_letters.issubset(charset):
             entropy[charset_name] = math.log(1.0*len(charset), 2.0) * password_len
 
@@ -206,7 +203,7 @@ def secure_random_quality(sample_size=1000000):
     mean = float(total) / float(sample_size)
     # calculate the variance
     variance = 0.0
-    for val, count in iteritems(counts):
+    for val, count in counts.items():
         variance += ((val - mean) ** 2.0) * count
     variance /= float(sample_size) - 1.0
     # ensure variance is positive (sometimes zeros can be negative with floating point numbers)

@@ -3,13 +3,12 @@
 from setuptools import setup
 
 INSTALL_REQUIREMENTS = [
-    "future==0.16.0",
-    "pyperclip==1.5.27"
+    "pyperclip==1.7.0"
 ]
 
 setup(
     name="passwdgen",
-    version="0.2.3",
+    version="0.3.0",
     description="A password generation utility",
     author="Thane Thomson",
     author_email="connect@thanethomson.com",
@@ -34,7 +33,8 @@ setup(
         "Natural Language :: English",
         "Operating System :: POSIX",
         "Operating System :: MacOS",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Topic :: Utilities",
     ]
 )
