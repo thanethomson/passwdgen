@@ -1,5 +1,9 @@
 # Changelog for `passwdgen`
 
+## `v0.3.1` - 04 November 2019
+
+* Fix README for PyPI so it shows up
+
 ## `v0.3.0` - 04 November 2019
 
 * Remove Python 2 support
