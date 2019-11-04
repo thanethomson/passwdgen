@@ -1,7 +1,8 @@
 # passwdgen
 
 [![Build Status](https://travis-ci.org/thanethomson/passwdgen.svg?branch=master)](https://travis-ci.org/thanethomson/passwdgen)
-[![PyPI version 0.2.2](https://img.shields.io/badge/pypi-v0.2.2-blue.svg)](https://pypi.python.org/pypi/passwdgen/0.2.2)
+[![PyPI](https://img.shields.io/pypi/v/passwdgen.svg)](https://pypi.python.org/pypi/passwdgen)
+[![PyPI](https://img.shields.io/pypi/pyversions/passwdgen.svg)](https://pypi.python.org/pypi/passwdgen)
 
 ## Overview
 `passwdgen` is a simple password generation utility with a couple of
@@ -71,7 +72,7 @@ Generate a password. Two kinds of passwords can be generated:
 * dictionary-based passwords (the default), or
 * character-based passwords (see this [XKCD](http://xkcd.com/936/)
   before you choose this mechanism).
- 
+
 Some examples of **dictionary-based** password generation:
 
 ```bash
