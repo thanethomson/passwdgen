@@ -1,5 +1,11 @@
 # Changelog for `passwdgen`
 
+## `v0.3.0` - 04 November 2019
+
+* Remove Python 2 support
+* Restrict special characters to those [supported by
+  AWS](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html)
+
 ## `v0.2.2` - 06 December 2016
 
 * Another attempt to fix `builtins` import issue in Python 2.7.
