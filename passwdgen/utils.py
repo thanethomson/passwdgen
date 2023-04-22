@@ -19,7 +19,7 @@ __all__ = [
     "calculate_entropy",
     "load_word_list",
     "secure_random",
-    "secure_random_quality"
+    "secure_random_quality",
 ]
 
 
@@ -68,7 +68,7 @@ def clean_word_list(input_path, output_path, encoding=None, min_word_len=None):
     return {
         "time": end_time - start_time,
         "words_read": words_read,
-        "words_written": len(word_list)
+        "words_written": len(word_list),
     }
 
 
@@ -103,7 +103,7 @@ def calculate_entropy(password, dict_set=None):
     # find the charsets in which we'll find this password
     for charset_name, charset in PASSWORD_CHARSETS.items():
         if password_letters.issubset(charset):
-            entropy[charset_name] = math.log(1.0*len(charset), 2.0) * password_len
+            entropy[charset_name] = math.log(1.0 * len(charset), 2.0) * password_len
 
     if dict_set is not None:
         # we assume our dictionary words are all lowercase, and that our separator is used
@@ -126,7 +126,9 @@ def calculate_entropy(password, dict_set=None):
 
                 # only if all of the words in the password are in our specific dictionary
                 if all_words_found:
-                    entropy[PC_DICT] = math.log(permutations(len(dict_set), len(words)), 2.0)
+                    entropy[PC_DICT] = math.log(
+                        permutations(len(dict_set), len(words)), 2.0
+                    )
 
     return entropy
 
@@ -146,7 +148,9 @@ def load_word_list(filename=None, resource=None, encoding=None):
     words = set()
 
     if filename is None:
-        filename = importlib.resources.files("passwdgen").joinpath(resource or DEFAULT_WORD_LIST)
+        filename = importlib.resources.files("passwdgen").joinpath(
+            resource or DEFAULT_WORD_LIST
+        )
 
     with open(filename, "rt", encoding=encoding) as input_file:
         for line in input_file:
@@ -155,7 +159,10 @@ def load_word_list(filename=None, resource=None, encoding=None):
                 words.add(word)
 
     if len(words) < MIN_DICT_SIZE:
-        raise ValueError("Dictionary is too small. Valid dictionaries must contain at least %d unique words." % MIN_DICT_SIZE)
+        raise ValueError(
+            "Dictionary is too small. Valid dictionaries must contain at least %d unique words."
+            % MIN_DICT_SIZE
+        )
 
     return words
 
@@ -174,11 +181,13 @@ def secure_random(a, b=None):
         A random integer i, with a <= i < b if b is supplied, otherwise 0 <= i < a.
     """
     if (a < 0) or ((b is not None) and (b < 0)):
-        raise ValueError("Both a and b need to be integers >= 0 for secure random number generation")
+        raise ValueError(
+            "Both a and b need to be integers >= 0 for secure random number generation"
+        )
     if (b is not None) and (b <= a):
         raise ValueError("For secure random number generation, b must be < a")
 
-    (random_val, ) = struct.unpack("Q", os.urandom(8))
+    (random_val,) = struct.unpack("Q", os.urandom(8))
     return (random_val % int(a)) if b is None else (int(a) + (random_val % int(b - a)))
 
 
@@ -210,7 +219,7 @@ def secure_random_quality(sample_size=1000000):
     if variance < 0.0:
         variance *= -1.0
     stddev = math.sqrt(variance)
-    expected_variance = ((101.0 ** 2.0) - 1.0) / 12.0
+    expected_variance = ((101.0**2.0) - 1.0) / 12.0
     expected_stddev = math.sqrt(expected_variance)
 
     end_time = time.time()
@@ -221,5 +230,5 @@ def secure_random_quality(sample_size=1000000):
         "stddev": stddev,
         "expected_stddev": expected_stddev,
         "stddev_diff": 100.0 * (abs(expected_stddev - stddev) / expected_stddev),
-        "time": end_time - start_time
+        "time": end_time - start_time,
     }

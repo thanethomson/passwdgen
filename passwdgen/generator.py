@@ -6,10 +6,7 @@ from .utils import secure_random, load_word_list
 from .constants import *
 
 
-__all__ = [
-    "chars",
-    "words"
-]
+__all__ = ["chars", "words"]
 
 
 def chars(charset=None, length=None, min_entropy=None):
@@ -66,7 +63,13 @@ def select_random_words(word_list, count, starting_letters=None):
         return result
 
 
-def words(dict_set=None, separator=None, word_count=None, min_entropy=None, starting_letters=None):
+def words(
+    dict_set=None,
+    separator=None,
+    word_count=None,
+    min_entropy=None,
+    starting_letters=None,
+):
     """Generates a word-based password from the given dictionary. If the word_count parameter is supplied,
     the min_entropy parameter is ignored (i.e. either a word count or minimum entropy is required, but not
     both). If no length or min_entropy parameters are supplied, a default word count is chosen (see
@@ -105,12 +108,18 @@ def words(dict_set=None, separator=None, word_count=None, min_entropy=None, star
         # check that all of the required starting letters are represented
         for ch in starting_letters:
             if not (ch in categorised_words):
-                raise ValueError("Dictionary does not contain any words beginning with \"%s\"" % ch)
+                raise ValueError(
+                    'Dictionary does not contain any words beginning with "%s"' % ch
+                )
 
     password_words = []
 
     if word_count is None and min_entropy is None:
-        word_count = DEFAULT_WORD_PASSWORD_WORDS if starting_letters is None else len(starting_letters)
+        word_count = (
+            DEFAULT_WORD_PASSWORD_WORDS
+            if starting_letters is None
+            else len(starting_letters)
+        )
 
     if separator is None:
         separator = DEFAULT_WORD_SEPARATOR
@@ -121,16 +130,17 @@ def words(dict_set=None, separator=None, word_count=None, min_entropy=None, star
 
         else:
             if len(starting_letters) < word_count:
-                raise ValueError((
-                    "Please supply at least %d starting letters to meet the minimum word count " +
-                    "requirement"
-                ) % word_count)
+                raise ValueError(
+                    (
+                        "Please supply at least %d starting letters to meet the minimum word count "
+                        + "requirement"
+                    )
+                    % word_count
+                )
 
             password_words.extend(
                 select_random_words(
-                    categorised_words,
-                    word_count,
-                    starting_letters=starting_letters
+                    categorised_words, word_count, starting_letters=starting_letters
                 )
             )
 
@@ -143,16 +153,17 @@ def words(dict_set=None, separator=None, word_count=None, min_entropy=None, star
 
         else:
             if len(starting_letters) < min_words:
-                raise ValueError((
-                    "Please supply at least %d starting letters to meet the minimum word count " +
-                    "requirement"
-                ) % min_words)
+                raise ValueError(
+                    (
+                        "Please supply at least %d starting letters to meet the minimum word count "
+                        + "requirement"
+                    )
+                    % min_words
+                )
 
             password_words.extend(
                 select_random_words(
-                    categorised_words,
-                    min_words,
-                    starting_letters=starting_letters
+                    categorised_words, min_words, starting_letters=starting_letters
                 )
             )
 

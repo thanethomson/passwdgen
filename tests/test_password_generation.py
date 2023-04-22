@@ -8,7 +8,6 @@ from passwdgen.utils import *
 
 
 class TestPasswordGeneration(unittest.TestCase):
-
     word_list = load_word_list()
 
     def test_unrecognised_charset(self):
@@ -21,13 +20,17 @@ class TestPasswordGeneration(unittest.TestCase):
     def test_not_enough_starting_letters(self):
         try:
             words(self.word_list, word_count=5, starting_letters="abc")
-            self.fail("Fewer starting letters than required word count should trigger a ValueError")
+            self.fail(
+                "Fewer starting letters than required word count should trigger a ValueError"
+            )
         except ValueError:
             pass
 
         try:
             words(self.word_list, min_entropy=80, starting_letters="abc")
-            self.fail("Fewer starting letters than required word count should trigger a ValueError")
+            self.fail(
+                "Fewer starting letters than required word count should trigger a ValueError"
+            )
         except ValueError:
             pass
 

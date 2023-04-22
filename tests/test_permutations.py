@@ -6,7 +6,6 @@ from passwdgen.utils import permutations
 
 
 class TestPermutationCount(unittest.TestCase):
-
     def test_failure_modes(self):
         # should return 0 if k > n
         self.assertEqual(0, permutations(10, 20))

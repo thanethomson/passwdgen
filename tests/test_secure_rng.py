@@ -5,7 +5,6 @@ from passwdgen.utils import secure_random
 
 
 class TestSecureRNG(unittest.TestCase):
-
     def test_upper_limiting_only(self):
         for i in range(1000):
             random_val = secure_random(100)

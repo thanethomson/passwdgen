@@ -32,7 +32,7 @@ __all__ = [
     "DEFAULT_WORD_PASSWORD_WORDS",
     "DEFAULT_MIN_WORD_LEN",
     "MIN_DICT_SIZE",
-    "DEFAULT_WORD_SEPARATOR"
+    "DEFAULT_WORD_SEPARATOR",
 ]
 
 PC_ALPHA_LOWER = "alpha-lower"
@@ -69,7 +69,7 @@ PASSWORD_SEPARATORS = {
     SEP_SPACE: " ",
     SEP_COMMA: ",",
     SEP_SEMICOLON: ";",
-    SEP_COLON: ":"
+    SEP_COLON: ":",
 }
 
 PASSWORD_SEPARATOR_IDS = [
@@ -80,7 +80,7 @@ PASSWORD_SEPARATOR_IDS = [
     SEP_SPACE,
     SEP_COMMA,
     SEP_SEMICOLON,
-    SEP_COLON
+    SEP_COLON,
 ]
 
 PASSWORD_CHARSETS = {
@@ -92,7 +92,7 @@ PASSWORD_CHARSETS = {
     PC_ALPHA_LOWER_SEP: set(string.ascii_lowercase + separators),
     PC_ALPHA_UPPER_SEP: set(string.ascii_uppercase + separators),
     PC_SPECIAL: set(string.ascii_letters + string.digits + special_chars),
-    PC_NUMERIC: set(string.digits)
+    PC_NUMERIC: set(string.digits),
 }
 
 PASSWORD_CHARSET_NAMES = (
@@ -100,12 +100,18 @@ PASSWORD_CHARSET_NAMES = (
     (PC_ALPHA_UPPER, "Alphabetical, uppercase (A-Z)"),
     (PC_ALPHA, "Alphabetical (a-z, A-Z)"),
     (PC_ALPHA_NUMERIC, "Alphabetical and numeric (a-z, A-Z, 0-9)"),
-    (PC_ALPHA_NUMERIC_SPACED, "Alphabetical, numeric, with spaces (a-z, A-Z, 0-9, space)"),
+    (
+        PC_ALPHA_NUMERIC_SPACED,
+        "Alphabetical, numeric, with spaces (a-z, A-Z, 0-9, space)",
+    ),
     (PC_NUMERIC, "Numeric (0-9)"),
     (PC_ALPHA_LOWER_SEP, "Alphabetical, lowercase, with separator (a-z, separator)"),
     (PC_ALPHA_UPPER_SEP, "Alphabetical, uppercase, with separator (A-Z, separator)"),
-    (PC_SPECIAL, "Alphabetical, numeric and special characters (a-z, A-Z, 0-9, punctuation)"),
-    (PC_DICT, "Dictionary")
+    (
+        PC_SPECIAL,
+        "Alphabetical, numeric and special characters (a-z, A-Z, 0-9, punctuation)",
+    ),
+    (PC_DICT, "Dictionary"),
 )
 
 PASSWORD_CHARSET_IDS = [_id for _id, _ in PASSWORD_CHARSET_NAMES]
