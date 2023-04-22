@@ -4,7 +4,6 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "passwdgen"
-version = "0.3.1"
 description = "A password generation utility"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -27,6 +26,7 @@ classifiers = [
 dependencies = [
     "pyperclip >= 1.8.2"
 ]
+dynamic = ["version"]
 
 [project.urls]
 "Homepage" = "https://github.com/thanethomson/passwdgen"

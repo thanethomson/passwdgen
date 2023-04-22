@@ -6,9 +6,9 @@ from string import ascii_lowercase
 from io import open
 import time
 import math
-import pkg_resources
 import os
 import struct
+import importlib.resources
 
 from .constants import *
 
@@ -146,7 +146,7 @@ def load_word_list(filename=None, resource=None, encoding=None):
     words = set()
 
     if filename is None:
-        filename = pkg_resources.resource_filename("passwdgen", resource or DEFAULT_WORD_LIST)
+        filename = importlib.resources.files("passwdgen").joinpath(resource or DEFAULT_WORD_LIST)
 
     with open(filename, "rt", encoding=encoding) as input_file:
         for line in input_file:
