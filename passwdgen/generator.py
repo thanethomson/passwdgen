@@ -56,7 +56,7 @@ def chars(charset=None, length=None, min_entropy=None):
 def select_random_words(word_list, count, starting_letters=None):
     if starting_letters is None:
         total_words = len(word_list)
-        return [word_list[secure_random(total_words)] for i in range(count)]
+        return [word_list[secure_random(total_words)] for _ in range(count)]
     else:
         # assume word_list is a dictionary
         result = []
