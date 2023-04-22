@@ -9,5 +9,4 @@ pyperclip = "~=1.8"
 [dev-packages]
 
 [requires]
-python_version = "3.11"
-python_full_version = "3.11.3"
+python_version = "3.9"

@@ -6,7 +6,7 @@ build-backend = "flit_core.buildapi"
 name = "passwdgen"
 description = "A password generation utility"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = {file = "LICENSE"}
 authors = [
     {name="Thane Thomson", email="connect@thanethomson.com"}
