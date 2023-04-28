@@ -1,8 +1,8 @@
 # Changelog for `passwdgen`
 
-## `v0.3.2` - 22 April 2023
+## `v0.4.0` - 28 April 2023
 
-* Packaging rework, linting
+* Packaging/build system rework, linting
 
 ## `v0.3.1` - 04 November 2019
 
