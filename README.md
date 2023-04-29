@@ -365,7 +365,7 @@ attacker has the same source dictionary, and knows which character you
 use to separate the words in your password (in this case, a hyphen).
 
 | Words | Permutations                      | Time to Crack    | Entropy    |
-| ----- | --------------------------------- | ---------------- | ---------- |
+|-------|-----------------------------------|------------------|------------|
 | 2     | 5,067,660,156                     | 5.07 seconds     | 32.24 bits |
 | 3     | 360,746,455,865,016               | 4.175 days       | 48.36 bits |
 | 4     | 25,679,736,460,751,163,960        | 814 years        | 64.47 bits |

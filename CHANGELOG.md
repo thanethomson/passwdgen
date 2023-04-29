@@ -1,5 +1,9 @@
 # Changelog for `passwdgen`
 
+## `v0.4.0` - 28 April 2023
+
+* Packaging/build system rework, linting
+
 ## `v0.3.1` - 04 November 2019
 
 * Fix README for PyPI so it shows up

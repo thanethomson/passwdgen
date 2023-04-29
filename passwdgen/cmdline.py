@@ -3,12 +3,12 @@
 import sys
 from getpass import getpass
 import argparse
-import pkg_resources
 import pyperclip
 
 from .generator import *
 from .utils import *
 from .constants import *
+from . import __version__
 
 
 def show_password_entropy(passwd, word_list):
@@ -18,156 +18,168 @@ def show_password_entropy(passwd, word_list):
     print("\nEntropy")
     print("-------")
     for charset, charset_name in list(PASSWORD_CHARSET_NAMES):
-        print(("{:<%d}" % LONGEST_CHARSET_NAME_LEN).format(charset_name) + " : " +
-              (("%.6f" % entropy[charset]) if charset in entropy else "not in character set"))
+        print(
+            ("{:<%d}" % LONGEST_CHARSET_NAME_LEN).format(charset_name)
+            + " : "
+            + (
+                ("%.6f" % entropy[charset])
+                if charset in entropy
+                else "not in character set"
+            )
+        )
     print("")
 
 
 def main():
     """Main routine for handling command line functionality for passwdgen."""
 
-    version = pkg_resources.require("passwdgen")[0].version
-    parser = argparse.ArgumentParser(description="A password generation utility (v%s)." % version)
+    parser = argparse.ArgumentParser(
+        description="A password generation utility (v%s)." % __version__
+    )
     subparsers = parser.add_subparsers(help="The command to execute.", dest="command")
 
     parser_info = subparsers.add_parser(
         "info",
         help=(
-            "Compute information about a password. If passwdgen has input piped into it via stdin, that " +
-            "will be interpreted as the password."
-        )
+            "Compute information about a password. If passwdgen has input piped into it via stdin, that "
+            + "will be interpreted as the password."
+        ),
     )
     parser_info.add_argument(
-        "-d", "--dictionary",
+        "-d",
+        "--dictionary",
         default=None,
-        help="Path to the dictionary file to use. This must be a plain text file with one word per line."
+        help="Path to the dictionary file to use. This must be a plain text file with one word per line.",
     )
     parser_info.add_argument(
-        "-e", "--encoding",
+        "-e",
+        "--encoding",
         default=None,
         help=(
-            "The encoding to use when read/writing input/output files. " +
-            "(See https://docs.python.org/2/library/codecs.html#standard-encodings)"
-        )
+            "The encoding to use when read/writing input/output files. "
+            + "(See https://docs.python.org/2/library/codecs.html#standard-encodings)"
+        ),
     )
 
-    parser_generate = subparsers.add_parser(
-        "generate",
-        help="Generate password(s)."
-    )
+    parser_generate = subparsers.add_parser("generate", help="Generate password(s).")
     parser_generate.add_argument(
-        "-c", "--clipboard",
+        "-c",
+        "--clipboard",
         action="store_true",
         help=(
-            "Copy the generated password to the clipboard (only for when generating a single password) instead of "+
-            "writing the password to stdout"
-        )
+            "Copy the generated password to the clipboard (only for when generating a single password) instead of "
+            + "writing the password to stdout"
+        ),
     )
     parser_generate.add_argument(
-        "-d", "--dictionary",
+        "-d",
+        "--dictionary",
         default=None,
-        help="Path to the dictionary file to use. This must be a plain text file with one word per line."
+        help="Path to the dictionary file to use. This must be a plain text file with one word per line.",
     )
     parser_generate.add_argument(
-        "-e", "--encoding",
+        "-e",
+        "--encoding",
         default=None,
         help=(
-            "The encoding to use when read/writing input/output files. " +
-            "(See https://docs.python.org/2/library/codecs.html#standard-encodings)"
-        )
+            "The encoding to use when read/writing input/output files. "
+            + "(See https://docs.python.org/2/library/codecs.html#standard-encodings)"
+        ),
     )
     parser_generate.add_argument(
-        "-i", "--info",
+        "-i",
+        "--info",
         action="store_true",
-        help="Additionally display information about the generated password, including password entropy."
+        help="Additionally display information about the generated password, including password entropy.",
     )
     parser_generate.add_argument(
-        "-l", "--length",
+        "-l",
+        "--length",
         type=int,
         default=None,
         help=(
-            "The default number of characters or words to generate, depending on which kind of password " +
-            "is being generated (a character- or dictionary-based one). Defaults: %d characters or %d words."
-        ) % (DEFAULT_CHAR_PASSWORD_LENGTH, DEFAULT_WORD_PASSWORD_WORDS)
+            "The default number of characters or words to generate, depending on which kind of password "
+            + "is being generated (a character- or dictionary-based one). Defaults: %d characters or %d words."
+        )
+        % (DEFAULT_CHAR_PASSWORD_LENGTH, DEFAULT_WORD_PASSWORD_WORDS),
     )
     parser_generate.add_argument(
-        "-m", "--min-entropy",
+        "-m",
+        "--min-entropy",
         default=None,
         type=int,
-        help="The minimum entropy of the required password (optional). If length is specified, this will be ignored."
+        help="The minimum entropy of the required password (optional). If length is specified, this will be ignored.",
     )
     parser_generate.add_argument(
-        "-s", "--separator",
+        "-s",
+        "--separator",
         choices=PASSWORD_SEPARATOR_IDS,
         default=SEP_DASH,
         help=(
             "The separator to use when generating passwords from dictionaries (default=%s)."
-        ) % SEP_DASH
+        )
+        % SEP_DASH,
     )
     parser_generate.add_argument(
         "--starting-letters",
         default=None,
-        help=(
-            "The letters to use as initials for the generated words."
-        )
+        help=("The letters to use as initials for the generated words."),
     )
     parser_generate.add_argument(
-        "-t", "--charset",
+        "-t",
+        "--charset",
         choices=PASSWORD_CHARSET_IDS,
         default=PC_DICT,
         help=(
-                 "Which character set/approach to use when generating the password (default=\"%s\"). See the " +
-                 "README.md file at https://github.com/thanethomson/passwdgen for more details."
-             ) % PC_DICT
+            'Which character set/approach to use when generating the password (default="%s"). See the '
+            + "README.md file at https://github.com/thanethomson/passwdgen for more details."
+        )
+        % PC_DICT,
     )
 
     parser_rng = subparsers.add_parser(
         "rng",
-        help="Test the quality of the operating system's random number generator."
+        help="Test the quality of the operating system's random number generator.",
     )
     parser_rng.add_argument(
-        "-s", "--sample-size",
+        "-s",
+        "--sample-size",
         type=int,
         default=1000000,
-        help="Define the sample size to test with (default = 1,000,000)."
+        help="Define the sample size to test with (default = 1,000,000).",
     )
 
-    subparsers.add_parser(
-        "version",
-        help="Display the version of passwdgen and exit."
-    )
+    subparsers.add_parser("version", help="Display the version of passwdgen and exit.")
 
     parser_wordlist = subparsers.add_parser(
-        "wordlist",
-        help="Utilities relating to word list manipulation."
+        "wordlist", help="Utilities relating to word list manipulation."
     )
     subparsers_wordlist = parser_wordlist.add_subparsers(dest="wordlist_subcommand")
 
     parser_wordlist_clean = subparsers_wordlist.add_parser(
         "clean",
-        help="Cleans up a given word list, stripping punctuation, digits and whitespace."
+        help="Cleans up a given word list, stripping punctuation, digits and whitespace.",
     )
     parser_wordlist_clean.add_argument(
-        "input_file",
-        help="The input text file, one word per line, to be cleaned."
+        "input_file", help="The input text file, one word per line, to be cleaned."
     )
     parser_wordlist_clean.add_argument(
-        "output_file",
-        help="The output file into which to write the cleaned word list."
+        "output_file", help="The output file into which to write the cleaned word list."
     )
     parser_wordlist_clean.add_argument(
-        "-e", "--encoding",
+        "-e",
+        "--encoding",
         default=None,
         help=(
-            "The encoding to use when read/writing input/output files. " +
-            "(See https://docs.python.org/2/library/codecs.html#standard-encodings)"
-        )
+            "The encoding to use when read/writing input/output files. "
+            + "(See https://docs.python.org/2/library/codecs.html#standard-encodings)"
+        ),
     )
 
     args = parser.parse_args()
 
     if args.command == "version":
-        print("passwdgen v%s" % version)
+        print("passwdgen v%s" % __version__)
 
     elif args.command == "info":
         if sys.stdin.isatty():
@@ -183,21 +195,22 @@ def main():
         show_password_entropy(passwd, word_list)
 
     elif args.command == "rng":
-        print("Testing OS RNG. Attempting to generate %d samples between 0 and 100 (inclusive). Please wait..." % args.sample_size)
+        print(
+            "Testing OS RNG. Attempting to generate %d samples between 0 and 100 (inclusive). Please wait..."
+            % args.sample_size
+        )
         result = secure_random_quality(args.sample_size)
         print("\nStatistics")
         print("----------")
-        print("Mean               : %.6f (should approach %.3f as the sample size increases; %.3f%% difference)" % (
-            result['mean'],
-            result['expected_mean'],
-            result['mean_diff']
-        ))
-        print("Standard deviation : %.6f (should be as close to %.6f as possible; %.3f%% difference)" % (
-            result['stddev'],
-            result['expected_stddev'],
-            result['stddev_diff']
-        ))
-        print("Time taken         : %.3f seconds\n" % result['time'])
+        print(
+            "Mean               : %.6f (should approach %.3f as the sample size increases; %.3f%% difference)"
+            % (result["mean"], result["expected_mean"], result["mean_diff"])
+        )
+        print(
+            "Standard deviation : %.6f (should be as close to %.6f as possible; %.3f%% difference)"
+            % (result["stddev"], result["expected_stddev"], result["stddev_diff"])
+        )
+        print("Time taken         : %.3f seconds\n" % result["time"])
 
     elif args.command == "generate":
         try:
@@ -211,13 +224,11 @@ def main():
                     separator=PASSWORD_SEPARATORS[args.separator],
                     word_count=args.length,
                     min_entropy=args.min_entropy,
-                    starting_letters=args.starting_letters
+                    starting_letters=args.starting_letters,
                 )
             else:
                 passwd = chars(
-                    args.charset,
-                    length=args.length,
-                    min_entropy=args.min_entropy
+                    args.charset, length=args.length, min_entropy=args.min_entropy
                 )
 
             if args.clipboard:
@@ -236,12 +247,9 @@ def main():
         if args.wordlist_subcommand == "clean":
             print("Attempting to clean word list: %s" % args.input_file)
             result = clean_word_list(
-                args.input_file,
-                args.output_file,
-                encoding=args.encoding
+                args.input_file, args.output_file, encoding=args.encoding
             )
-            print("Cleaned file in %.3f seconds. Read %d words, wrote %d." % (
-                result["time"],
-                result["words_read"],
-                result["words_written"]
-            ))
+            print(
+                "Cleaned file in %.3f seconds. Read %d words, wrote %d."
+                % (result["time"], result["words_read"], result["words_written"])
+            )
