@@ -1,6 +1,5 @@
 # passwdgen
 
-[![Build Status](https://travis-ci.org/thanethomson/passwdgen.svg?branch=master)](https://travis-ci.org/thanethomson/passwdgen)
 [![PyPI](https://img.shields.io/pypi/v/passwdgen.svg)](https://pypi.python.org/pypi/passwdgen)
 [![PyPI](https://img.shields.io/pypi/pyversions/passwdgen.svg)](https://pypi.python.org/pypi/passwdgen)
 
@@ -11,7 +10,7 @@ entropy-based password generation).
 
 
 ## Installation
-To use `passwdgen`, you will need to install Python 3.6+.
+To use `passwdgen`, you will need to install Python 3.9+.
 
 ```bash
 > pip install passwdgen
